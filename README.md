@@ -58,6 +58,7 @@ As an unsupervised task, there are few definitive metrics to determine how well 
     <img src="./figures/synthetic_cos_lloyd.png" width="500"> <img src="./figures/synthetic_cos_median.png" width="500">
 </div>
 
+
 From the figures above, it seems that the Euclidean distance strategy along with Lloyd's algorithm for centroid updates produced the strongest results for the clustering algorith, which is somewhat expected.
 
 
