@@ -77,12 +77,12 @@ int main(int argc, char* argv[]) {
     // Slightly unwieldy but the best way to allow an interface when templates must be known at compile time
     if (distanceType == "Euclidean" && updateStrategy == "Lloyds") {
         performClustering<EuclideanDistance<double>, LloydsUpdateStrategy<double>>(dataPoints, k, maxIterations, numThreads, inputFile, outputFile);
-    } else if (distanceType == "Euclidean" && updateStrategy == "KPP") {
-        performClustering<EuclideanDistance<double>, KMeansPlusPlusUpdateStrategy<double, EuclideanDistance<double>>>(dataPoints, k, maxIterations, numThreads,inputFile, outputFile);
+    } else if (distanceType == "Euclidean" && updateStrategy == "Median") {
+        performClustering<EuclideanDistance<double>, MedianUpdateStrategy<double>>(dataPoints, k, maxIterations, numThreads,inputFile, outputFile);
     } else if (distanceType == "Cosine" && updateStrategy == "Lloyds") {
         performClustering<CosineDistance<double>, LloydsUpdateStrategy<double>>(dataPoints, k, maxIterations, numThreads, inputFile, outputFile);
-    } else if (distanceType == "Cosine" && updateStrategy == "KPP") {
-        performClustering<CosineDistance<double>, KMeansPlusPlusUpdateStrategy<double, CosineDistance<double>>>(dataPoints, k, maxIterations, numThreads, inputFile, outputFile);
+    } else if (distanceType == "Cosine" && updateStrategy == "Median") {
+        performClustering<CosineDistance<double>, MedianUpdateStrategy<double>>(dataPoints, k, maxIterations, numThreads, inputFile, outputFile);
     } else {
         std::cerr << "Unsupported distance type or update strategy" << std::endl;
         return 1;

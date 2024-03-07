@@ -43,36 +43,42 @@ struct LloydsUpdateStrategy : UpdateStrategy<T> {
 };
 
 
-template<typename T, typename Distance>
-struct KMeansPlusPlusUpdateStrategy : UpdateStrategy<T> {
+template<typename T>
+struct MedianUpdateStrategy : UpdateStrategy<T> {
     void updateCentroids(std::vector<DataPoint<T>>& centroids, 
                          const std::vector<DataPoint<T>>& dataPoints, 
                          const std::vector<int>& assignments, 
                          int k) override {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        for (int clusterIdx = 0; clusterIdx < k; ++clusterIdx) {
-            std::vector<T> distances(dataPoints.size());
+        for (int clusterIndex = 0; clusterIndex < k; ++clusterIndex) {
+            std::vector<std::vector<T>> dimensionValues(dataPoints[0].getCoordinates().size());
+
+            // Collect all points assigned to the current cluster
             for (int i = 0; i < assignments.size(); ++i) {
-                if (assignments[i] == clusterIdx) {
-                    T dist = Distance::distance(dataPoints[i], centroids[clusterIdx]);
-                    distances[i] = dist * dist;
+                if (assignments[i] == clusterIndex) {
+                    for (int dim = 0; dim < dataPoints[i].getCoordinates().size(); ++dim) {
+                        dimensionValues[dim].push_back(dataPoints[i].getCoordinates()[dim]);
+                    }
                 }
             }
-            T totalDistance = std::accumulate(distances.begin(), distances.end(), static_cast<T>(0));
-            std::uniform_real_distribution<> distrib(0, totalDistance);
-            T rnd = distrib(gen);
-            
-            for (int i = 0; i < assignments.size(); ++i) {
-                if (assignments[i] == clusterIdx) {
-                    if ((rnd -= distances[i]) > 0) continue;
-                    centroids[clusterIdx] = dataPoints[i];
-                    break;
+
+            std::vector<T> newCoordinates(dimensionValues.size());
+            // Calculate median for each dimension and update the centroid
+            for (int dim = 0; dim < dimensionValues.size(); ++dim) {
+                std::sort(dimensionValues[dim].begin(), dimensionValues[dim].end());
+                size_t midIndex = dimensionValues[dim].size() / 2;
+                T median;
+                if (dimensionValues[dim].size() % 2 == 0) {
+                    median = (dimensionValues[dim][midIndex - 1] + dimensionValues[dim][midIndex]) / 2;
+                } else {
+                    median = dimensionValues[dim][midIndex];
                 }
+                newCoordinates[dim] = median;
             }
+            centroids[clusterIndex].setCoordinates(newCoordinates);
         }
     }
 };
+
 
 
 #endif // CENTROID_H
