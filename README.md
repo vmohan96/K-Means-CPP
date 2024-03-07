@@ -63,7 +63,7 @@ From the figures above, it seems that the Euclidean distance strategy along with
 
 
 ### Threading Performance
-Multithreading was used to assign clusters after centroid updates on every iteration, which is the most taxing part of the algorithm. To see how much parallelism helps, performance tests were conducted using the Synthetic Dataset as a benchmark. Tests were all run using **Euclidean** distance with **Lloyd's Algorithm**, as these parameters seemed most indicative of K-means clustering in practice. Benchmark results are show below.
+Multithreading was used to assign clusters after centroid updates on every iteration, which is the most taxing part of the algorithm. To see how much parallelism helped, performance tests were conducted using the Synthetic Dataset. Benchmark tests were all run using **Euclidean** distance with **Lloyd's Algorithm**, as these parameters seemed most indicative of K-means clustering in practice. Results are show below.
 
 | Clusters | Threads | Runtime | Speedup |
 | -------- | ------- | ------- | ------- |
@@ -80,6 +80,6 @@ Multithreading was used to assign clusters after centroid updates on every itera
 | 8        |  4      |  15.86  |  2.67   |
 | 8        |  8      |  18.51  |  2.29   |
 
-There was noticable speedup for increasing threads on all $k$, however speedup did not scale well for higher thread counts. $k=8$ fared the best, achieving a 2.67 speedup for 4 threads, but still fell off perfect scaling quickly. This was ultimately a relatively simple implementation of parallelism applied to one part of the algorithm, and it is likely higher threads for fewer clusters led to more contention for the lock when updating assignments. Matching number of threads to $k$ seems to produce the best results.
+There was noticable speedup for increasing threads on all $k$, however speedup did not scale well for higher thread counts. $k=8$ fared the best, achieving a 2.67 speedup for 4 threads, but still fell off of perfect scaling quickly. This is likely because this was a relatively simple implementation of parallelism applied to one part of the algorithm, and it is likely higher threads for fewer clusters led to more contention for the lock when updating assignments. Matching number of threads to $k$ seems to produce the best results.
 
 
