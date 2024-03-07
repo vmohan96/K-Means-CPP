@@ -59,7 +59,7 @@ As an unsupervised task, there are few definitive metrics to determine how well 
 </div>
 
 
-From the figures above, it seems that the Euclidean distance strategy along with Lloyd's algorithm for centroid updates produced the strongest results for the clustering algorith, which is somewhat expected.
+From the figures above, it seems that the Euclidean distance strategy along with Lloyd's algorithm for centroid updates produced the strongest results for the clustering algorithm, which is somewhat expected. 
 
 
 ### Threading Performance
